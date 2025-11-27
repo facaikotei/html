@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>QR code產生器</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/json5/2.2.3/index.min.js"></script>
         <style>
@@ -23,13 +24,13 @@
                         show.insertAdjacentHTML('beforeend',`<a href="${url}"></a>`)
                         new QRCode(document.querySelector(`[href="${url}"]`), url);
                     }
-                    //document.querySelector('div').innerText = e;
                 }
                 catch(e){
                     console.error(e);
                     show.innerHTML = '痾<pre>{\n//"classroom name":[column,row],\n"資501A":[6,11],\n"資001":[6,12]\n}</pre>';
                 }
             });
+
         </script>
     </body>
 </html>
