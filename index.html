@@ -1,0 +1,35 @@
+﻿<!doctype html>
+<html>
+    <head>
+        <title>QR code產生器</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/json5/2.2.3/index.min.js"></script>
+        <style>
+        </style>
+    </head>
+    <body>
+        <textarea rows="10" style="text-wrap-mode: nowrap; width: 21cm;"></textarea>
+        <hr />
+        <div id="show"></div>
+        <script>
+            let show=document.querySelector('div');
+            show.innerHTML = '痾<pre>{\n//"classroom name":[column,row],\n"資501A":[6,11],\n"資001":[6,12]\n}</pre>';
+            document.querySelector('textarea').addEventListener('input', ({target}) => {
+                try{
+                    let data=JSON5.parse(target.value);
+                    show.innerHTML = '';
+                    for(i in data){
+                        let url=`https://translate.google.com/?text=${data[i][0]}-${data[i][1]}`;
+                        show.insertAdjacentHTML('beforeend',`<a href="${url}"></a>`)
+                        new QRCode(document.querySelector(`[href="${url}"]`), url);
+                    }
+                    //document.querySelector('div').innerText = e;
+                }
+                catch(e){
+                    console.error(e);
+                    show.innerHTML = '痾<pre>{\n//"classroom name":[column,row],\n"資501A":[6,11],\n"資001":[6,12]\n}</pre>';
+                }
+            });
+        </script>
+    </body>
+</html>
