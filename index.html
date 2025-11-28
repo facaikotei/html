@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/json5/2.2.3/index.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/awesome-qr/2.1.5-rc.0/awesome-qr.js"></script>
         <style></style>
     </head>
     <body>
@@ -17,18 +16,18 @@
         <script>
             const input = document.querySelector('#input');
             const show = document.querySelector('#show');
-            const defaultMessage = '<pre>正確的資料應以如下格式表示：\n[\n//[字串：教室名稱,正整數：直排,正整數：橫排],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
+            const defaultMessage = '<pre>//正確的資料應以如下格式表示：\n[\n//[教室名稱,直排,橫排],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
             show.innerHTML = defaultMessage;
-            input.addEventListener('input', () => {
-                if (isValidData(input.value)) {
-                    show.innerHTML = '';
+            input.addEventListener('input',async () => {
+                show.innerHTML = '';
+                try {
                     const data = JSON5.parse(input.value);
-                    data.forEach(async i => {
-                        const url = `https://translate.google.com/?text=${i[0]}+${i[1]}-${i[2]}`;
-                        show.insertAdjacentHTML('beforeend', `<a href="${url}"><img src="${await QRCode.toDataURL(url)}" /></a>`);
+                    for(const i of data)for(const j =1;j<=i[2];j++)for(const k =1;k<=i[1];k++){
+                        const url = `https://translate.google.com/?text=${i[0]}+${j}-${k}`;
+                        show.insertAdjacentHTML('beforeend', `<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${j}-${k}</a>`);
                     }
-                    );
-                } else {
+                }
+                catch(e){
                     show.innerHTML = defaultMessage;
                 }
             }
@@ -47,4 +46,5 @@
         </script>
     </body>
 </html>
+
 
