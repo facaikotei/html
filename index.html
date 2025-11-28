@@ -29,7 +29,7 @@
                             finalString += '<tr>';
                             for (let k = 1; k <= i[1]; k++) {
                                 finalString += '<td>';
-                                let url = `https://translate.google.com/?text=${i[0]}+${k}-${j}`;
+                                let url = `https://docs.google.com/forms/d/e/1FAIpQLSchSA12i0tov9J9oD7pO6DHt-pujlsTPGQGWwZNXzwAVS2Vbw/viewform?usp=pp_url&entry.1259309815=${i[0]}+${k}-${j}`;
                                 finalString += `<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${k}-${j}</a>`;
                                 finalString += '</td>';
                             }
