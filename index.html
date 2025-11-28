@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>QRcode產生器</title>
+        <title>報修表單QRcode產生器</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/json5/2.2.3/index.min.js"></script>
@@ -10,20 +10,20 @@
     <body>
         <form>
             <textarea id="input" placeholder="輸入資料..." rows="10" wrap="off" style="width: -webkit-fill-available;"></textarea>
+            <hr/>
         </form>
-        <hr/>
         <div id="show"></div>
         <script>
-            let input = document.querySelector('#input');
-            let show = document.querySelector('#show');
-            let defaultMessage = '正確的資料應以如下格式表示：<pre>[\n//[教室名稱(字串),列數(正整數),行數(正整數)],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
+            const input = document.querySelector('#input');
+            const show = document.querySelector('#show');
+            const defaultMessage = '正確的資料應以如下格式表示：<pre>[\n//[教室名稱：字串,排數：正整數：,每排電腦數：正整數],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
             show.innerHTML = defaultMessage;
             input.addEventListener('input', () => {
                 if (isValidData(input.value)) {
                     show.innerHTML = '';
-                    let data = JSON5.parse(input.value);
-                    Object.entries(data).forEach(i => {
-                        let url = `https://translate.google.com/?text=${encodeURIComponent(`${i[0]}+${i[1][0]}-${i[1][1]}`)}`;
+                    const data = JSON5.parse(input.value);
+                    data.forEach(i => {
+                        const url = `https://translate.google.com/?text=${encodeURIComponent(`${i[0]}+${i[1]}-${i[2]}`)}`;
                         show.insertAdjacentHTML('beforeend', `<a href="${url}"></a>`);
                         new QRCode(document.querySelector(`[href="${url}"]`),url);
                     }
@@ -35,7 +35,7 @@
             );
             function isValidData(dataString) {
                 try {
-                    if (Object.entries(JSON5.parse(dataString)).length && Object.entries(JSON5.parse(dataString)).every(i => i[1].length == 2 && Number.isInteger(i[1][0]) && Number.isInteger(i[1][1]))) {
+                    if(JSON5.parse(dataString).every(i => Number.isInteger(i[1]) && i[1]>0 && Number.isInteger(i[2]) && i[2]>0)) {
                         return true;
                     } else {
                         return false;
@@ -47,4 +47,5 @@
         </script>
     </body>
 </html>
+
 
