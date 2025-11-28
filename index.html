@@ -1,38 +1,49 @@
-﻿<!doctype html>
+<!doctype html>
 <html>
     <head>
-        <title>QR code產生器</title>
+        <title>QRcode產生器</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/json5/2.2.3/index.min.js"></script>
-        <style>
-        </style>
+        <style></style>
     </head>
     <body>
-        <textarea rows="10" style="text-wrap-mode: nowrap; width: -webkit-fill-available;"></textarea>
-        <hr />
+        <form>
+            <textarea id="input" placeholder="輸入資料..." rows="10" wrap="off" style="width: -webkit-fill-available;"></textarea>
+        </form>
+        <hr/>
         <div id="show"></div>
         <script>
-            let show=document.querySelector('div');
-            show.innerHTML = '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊<pre>{\n//"classroom name":[column,row],\n"資501A":[6,11],\n"資001":[6,12]\n}</pre>';
-            document.querySelector('textarea').addEventListener('input', ({target}) => {
-                try{
-                    let data=JSON5.parse(target.value);
+            let input = document.querySelector('#input');
+            let show = document.querySelector('#show');
+            let defaultMessage = '正確的資料應以如下格式表示：<pre>{\n//"classroom name":[column,row],\n"資501A":[6,11],\n"資405":[4,8],\n//...\n"資001":[6,12]\n}</pre>';
+            show.innerHTML = defaultMessage;
+            input.addEventListener('input', () => {
+                if (isValidData(input.value)) {
                     show.innerHTML = '';
-                    Object.entries(data).forEach(([i,j])=>{
-                        j+0;
-                        let url=`https://translate.google.com/?text=${j[0]}-${j[1]}`;
-                        show.insertAdjacentHTML('beforeend',`<a href="${url}"></a>`);
-                        new QRCode(document.querySelector(`[href="${url}"]`), url);
-                    });
+                    let data = JSON5.parse(input.value);
+                    Object.entries(data).forEach(i => {
+                        let url = `https://translate.google.com/?text=${encodeURIComponent(`${i[0]}+${i[1][0]}-${i[1][1]}`)}`;
+                        show.insertAdjacentHTML('beforeend', `<a href="${url}"></a>`);
+                        new QRCode(document.querySelector(`[href="${url}"]`),url);
+                    }
+                    );
+                } else {
+                    show.innerHTML = defaultMessage;
                 }
-                catch(e){
-                    console.error(e);
-                    show.innerHTML = '痾<pre>{\n//"classroom name":[column,row],\n"資501A":[6,11],\n"資001":[6,12]\n}</pre>';
+            }
+            );
+            function isValidData(dataString) {
+                try {
+                    if (Object.entries(JSON5.parse(dataString)).every(i => i[1].length == 2 && Number.isInteger(i[1][0]) && Number.isInteger(i[1][1]))) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (e) {
+                    return false;
                 }
-            });
+            }
         </script>
     </body>
 </html>
-
-
