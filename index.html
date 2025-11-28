@@ -18,49 +18,31 @@
             let show = document.querySelector('#show');
             let defaultMessage = '<pre>//正確的資料應以如下格式表示：\n[\n//[教室名稱,直排,橫排],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
             show.innerHTML = defaultMessage;
-            input.addEventListener('input',async () => {
+            input.addEventListener('input', async()=>{
                 show.innerHTML = '';
                 try {
-                    let finalString='';
                     let data = JSON5.parse(input.value);
-                    for(let i of data){
+                    let finalString = '';
+                    for (let i of data) {
                         finalString += '<table>';
-                        for(let j =1;j<=i[2];j++){
+                        for (let j = 1; j <= i[2]; j++) {
                             finalString += '<tr>';
-                            for(let k =1;k<=i[1];k++){
+                            for (let k = 1; k <= i[1]; k++) {
                                 finalString += '<td>';
-                                let url = `https://translate.google.com/?text=${i[0]}+${j}-${k}`;
-                                finalString+=`<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${j}-${k}</a>`;
+                                let url = `https://translate.google.com/?text=${i[0]}+${k}-${j}`;
+                                finalString += `<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${k}-${j}</a>`;
                                 finalString += '</td>';
                             }
                             finalString += '</tr>';
                         }
                         finalString += '</table>';
                     }
-                    show.innerHTML=finalString;
-                }
-                catch(e){
-                    show.innerHTML = e+defaultMessage;
+                    show.innerHTML = finalString;
+                } catch (e) {
+                    show.innerHTML = e + defaultMessage;
                 }
             }
             );
-            function isValidData(dataString) {
-                try {
-                    if (JSON5.parse(dataString).every(i => Number.isInteger(i[1]) && i[1] > 0 && Number.isInteger(i[2]) && i[2] > 0)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } catch (e) {
-                    return false;
-                }
-            }
         </script>
     </body>
 </html>
-
-
-
-
-
-
