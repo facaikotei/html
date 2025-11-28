@@ -21,21 +21,23 @@
             input.addEventListener('input',async () => {
                 show.innerHTML = '';
                 try {
+                    let finalString='';
                     let data = JSON5.parse(input.value);
                     for(let i of data){
-                        show.innerHTML += '<table>';
+                        finalString += '<table>';
                         for(let j =1;j<=i[2];j++){
-                            show.innerHTML += '<tr>';
+                            finalString += '<tr>';
                             for(let k =1;k<=i[1];k++){
-                                show.innerHTML += '<td>';
+                                finalString += '<td>';
                                 let url = `https://translate.google.com/?text=${i[0]}+${j}-${k}`;
-                                show.innerHTML+=`<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${j}-${k}</a>`;
-                                show.innerHTML += '</td>';
+                                finalString+=`<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${j}-${k}</a>`;
+                                finalString += '</td>';
                             }
-                            show.innerHTML += '</tr>';
+                            finalString += '</tr>';
                         }
-                        show.innerHTML += '</table>';
+                        finalString += '</table>';
                     }
+                    show.innerHTML=finalString;
                 }
                 catch(e){
                     show.innerHTML = e+defaultMessage;
@@ -56,6 +58,7 @@
         </script>
     </body>
 </html>
+
 
 
 
