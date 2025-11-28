@@ -17,7 +17,7 @@
         <script>
             const input = document.querySelector('#input');
             const show = document.querySelector('#show');
-            const defaultMessage = '正確的資料應以如下格式表示：<pre>[\n//[教室名稱：字串,排數：正整數：,每排電腦數：正整數],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
+            const defaultMessage = '<pre>正確的資料應以如下格式表示：\n[\n//[字串：教室名稱,正整數：直排,正整數：橫排],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
             show.innerHTML = defaultMessage;
             input.addEventListener('input', () => {
                 if (isValidData(input.value)) {
@@ -25,11 +25,7 @@
                     const data = JSON5.parse(input.value);
                     data.forEach(async i => {
                         const url = `https://translate.google.com/?text=${i[0]}+${i[1]}-${i[2]}`;
-                        show.insertAdjacentHTML('beforeend', `<a href="${url}"></a>`);
-                        //show.lastElementChild.insertAdjacentHTML('beforeend', `<img src="${await QRCode.toDataURL(url)}" />`);
-                        show.lastElementChild.insertAdjacentHTML('beforeend', `<img src="${await new AwesomeQR.AwesomeQR({
-                            text: url
-                        }).draw()}" />`);
+                        show.insertAdjacentHTML('beforeend', `<a href="${url}"><img src="${await QRCode.toDataURL(url)}" /></a>`);
                     }
                     );
                 } else {
@@ -51,3 +47,4 @@
         </script>
     </body>
 </html>
+
