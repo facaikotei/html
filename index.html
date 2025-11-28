@@ -14,16 +14,16 @@
         </form>
         <div id="show"></div>
         <script>
-            const input = document.querySelector('#input');
-            const show = document.querySelector('#show');
-            const defaultMessage = '<pre>//正確的資料應以如下格式表示：\n[\n//[教室名稱,直排,橫排],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
+            let input = document.querySelector('#input');
+            let show = document.querySelector('#show');
+            let defaultMessage = '<pre>//正確的資料應以如下格式表示：\n[\n//[教室名稱,直排,橫排],\n["資501A",6,11],\n["資405",4,8],\n//...\n["資001",6,12]\n]</pre>';
             show.innerHTML = defaultMessage;
             input.addEventListener('input',async () => {
                 show.innerHTML = '';
                 try {
-                    const data = JSON5.parse(input.value);
-                    for(const i of data)for(const j =1;j<=i[2];j++)for(const k =1;k<=i[1];k++){
-                        const url = `https://translate.google.com/?text=${i[0]}+${j}-${k}`;
+                    let data = JSON5.parse(input.value);
+                    for(let i of data)for(let j =1;j<=i[2];j++)for(let k =1;k<=i[1];k++){
+                        let url = `https://translate.google.com/?text=${i[0]}+${j}-${k}`;
                         show.insertAdjacentHTML('beforeend', `<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${j}-${k}</a>`);
                     }
                 }
@@ -46,6 +46,7 @@
         </script>
     </body>
 </html>
+
 
 
 
