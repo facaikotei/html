@@ -22,9 +22,19 @@
                 show.innerHTML = '';
                 try {
                     let data = JSON5.parse(input.value);
-                    for(let i of data)for(let j =1;j<=i[2];j++)for(let k =1;k<=i[1];k++){
-                        let url = `https://translate.google.com/?text=${i[0]}+${j}-${k}`;
-                        show.insertAdjacentHTML('beforeend', `<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${j}-${k}</a>`);
+                    for(let i of data){
+                        show.innerHTML += '<table>';
+                        for(let j =1;j<=i[2];j++){
+                            show.innerHTML += '<tr>';
+                            for(let k =1;k<=i[1];k++){
+                                show.innerHTML += '<td>';
+                                let url = `https://translate.google.com/?text=${i[0]}+${j}-${k}`;
+                                show.innerHTML+=`<a href="${url}"><img src="${await QRCode.toDataURL(url)}" />${i[0]} ${j}-${k}</a>`;
+                                show.innerHTML += '</td>';
+                            }
+                            show.innerHTML += '</tr>';
+                        }
+                        show.innerHTML += '</table>';
                     }
                 }
                 catch(e){
@@ -46,6 +56,7 @@
         </script>
     </body>
 </html>
+
 
 
 
